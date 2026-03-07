@@ -35,4 +35,41 @@
  */
 export function biryaniBatchProcessor(orders) {
   // Your code here
+  if (!Array.isArray(orders) || orders.length == 0) return { totalBatches: 0, totalPlates: 0, ordersProcessed: 0 };
+  let orderProcessed = 0;
+  let totalBatches = 0;
+  let totalPlates = 0;
+  let i = 0;
+  do {
+    if (typeof orders[i] !== 'number' || orders[i] <= 0 || !Number.isInteger(orders[i])) {
+      i++;
+      continue;
+    }
+    if (orders[i] <= 5) {
+      totalBatches++;
+      totalPlates += orders[i];
+      orderProcessed++;
+    }
+    else {
+      const batches = Math.ceil(orders[i] / 5);
+      totalBatches += batches;
+      totalPlates += orders[i]
+      orderProcessed++;
+    }
+    i++;
+  }
+  while (i < orders.length);
+  return { totalBatches: totalBatches, totalPlates: totalPlates, ordersProcessed: orderProcessed }
+  //    * Rules (use do...while loop):
+  //  *   - orders is an array of numbers (plates per order): [3, 7, 2, ...]
+  //  *   - Process orders one by one (for each order, use do...while for batching)
+  //  *   - Each batch can have MAXIMUM 5 plates
+  //  *   - If an order has more than 5, split into batches:
+  //  *     e.g., order of 12 = batch(5) + batch(5) + batch(2) = 3 batches
+  //  *   - Track: totalBatches, totalPlates, ordersProcessed
+  //  *   - Skip orders that are not positive integers (0, negative, decimal, non-number)
+  //  *
+  //  * Validation:
+  //  *   - Agar orders array nahi hai ya empty hai,
+  //  *     return: { totalBatches: 0, totalPlates: 0, ordersProcessed: 0 }
 }

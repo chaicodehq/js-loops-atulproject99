@@ -43,4 +43,52 @@
  */
 export function calculateEMI(principal, monthlyRate, emi) {
   // Your code here
+  if (typeof principal !== 'number' || principal <= 0 || typeof monthlyRate !== 'number' || monthlyRate <= 0 || typeof emi !== 'number' || emi <= 0) return { months: -1, totalPaid: -1, totalInterest: -1 }
+
+  let remainingAmount = principal;
+  let totalMonth = 1;
+  let totalPaid = 0;
+
+  while (remainingAmount > 0) {
+    const interest = remainingAmount * monthlyRate;
+    if (emi <= interest) {
+      return { months: -1, totalPaid: -1, totalInterest: -1 };
+    }
+    else {
+
+      remainingAmount = remainingAmount + interest;
+      if (remainingAmount < emi) {
+        totalPaid = totalPaid + remainingAmount;
+        remainingAmount = 0;
+
+        break;
+      }
+      else {
+        remainingAmount = remainingAmount - emi;
+        totalMonth++;
+        totalPaid = totalPaid + emi;
+      }
+    }
+
+
+  }
+  return { months: totalMonth, totalPaid: parseFloat(totalPaid.toFixed(2)), totalInterest: parseFloat((totalPaid - principal).toFixed(2)) }
+    ;
+  //    *
+  //  * Rules (use while loop):
+  //  *   - Start with principal amount (remaining balance)
+  //  *   - Each month:
+  //  *     1. Calculate interest = remaining * monthlyRate (monthlyRate is like 0.02 for 2%)
+  //  *     2. Add interest to remaining: remaining = remaining + interest
+  //  *     3. Deduct EMI: remaining = remaining - emi
+  //  *     4. Increment months count
+  //  *     5. Add emi to totalPaid
+  //  *   - Continue while remaining > 0
+  //  *   - In the last month, if remaining < emi, just pay what's left
+  //  *     (totalPaid += remaining before deduction, not full emi)
+  //  *
+  //  * Infinite loop protection:
+  //  *   - Agar EMI <= first month's interest (principal * monthlyRate),
+  //  *     toh loan kabhi khatam nahi hoga!
+  //  *     Return: { months: -1, totalPaid: -1, totalInterest: -1 }
 }

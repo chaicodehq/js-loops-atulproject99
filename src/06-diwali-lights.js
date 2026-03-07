@@ -38,5 +38,56 @@
  *   // => { selected: [{ color: "golden", length: 5, cost: 250 }], totalLength: 5, totalCost: 250 }
  */
 export function diwaliLightsPlan(lightStrings, budget) {
+
+  if (!Array.isArray(lightStrings) || lightStrings.length == 0 || typeof budget !== 'number' || budget <= 0) return { selected: [], totalLength: 0, totalCost: 0 };
+  const selectedList = [];
+  for (const lightItem of lightStrings) {
+    let cost = 0;
+    if (lightItem.color.toLowerCase() == 'golden') {
+      cost = lightItem.length * 50;
+    }
+    else if (lightItem.color.toLowerCase() == 'multicolor') {
+      cost = lightItem.length * 40;
+    }
+    else if (lightItem.color.toLowerCase() == 'white') {
+      cost = lightItem.length * 30;
+    }
+    else {
+      cost = lightItem.length * 35;
+    }
+    selectedList.push({ color: lightItem.color, length: lightItem.length, cost: cost })
+  }
+
+  let totalCost = selectedList.reduce((acc, current) => acc + current.cost, 0);
+
+  while (totalCost > budget) {
+
+    const lastItem = selectedList.pop();
+    totalCost = totalCost - lastItem.cost;
+  }
+
+  return {
+    selected: selectedList,
+    totalLength: selectedList.reduce((acc, current) => acc + current.length, 0),
+    totalCost: totalCost
+  }
   // Your code here
+  //    * Sharma ji apne ghar ko Diwali pe sajana chahte hain light strings se.
+  //  * Unke paas ek budget hai aur market mein alag alag colors ki light strings
+  //  * hain different lengths mein. Sharma ji sab kuch lena chahte hain, lekin
+  //  * budget se zyada nahi!
+  //  *
+  //  * Color rates (per meter):
+  //  *   - "golden" = Rs 50/meter
+  //  *   - "multicolor" = Rs 40/meter
+  //  *   - "white" = Rs 30/meter
+  //  *   - Any other color = Rs 35/meter
+  //  *
+  //  * Rules:
+  //  *   Step 1 - Use for...of to loop through lightStrings and add ALL of them
+  //  *     to selected list with their cost calculated
+  //  *   Step 2 - Use a while loop to check: agar totalCost > budget, toh remove
+  //  *     the LAST item from selected, subtract its cost, and keep removing until
+  //  *     totalCost <= budget
+
 }

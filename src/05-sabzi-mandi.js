@@ -31,4 +31,30 @@
  */
 export function sabziMandiBill(shoppingList, priceList) {
   // Your code here
+
+
+  //    * Amma smart hain - agar koi sabzi Rs 80/kg se zyada hai, toh nahi leni!
+  //  *
+  //  * Rules (use for...of loop):
+  //  *   - shoppingList is an array of objects: [{ name: "aloo", qty: 2 }, ...]
+  //  *   - priceList is an object: { aloo: 30, tamatar: 40, ... }
+  //  *   - Loop through each item in shoppingList using for...of
+  //  *   - Skip the item if:
+  //  *     (a) sabzi ka naam priceList mein nahi hai (not available in mandi)
+  //  *     (b) price per kg > Rs 80 (too expensive, Amma says "bahut mehenga hai!")
+  //  *   - For valid items, add to bill and build items array
+  // }
+  if (!Array.isArray(shoppingList) || shoppingList.length == 0 || Object.entries(priceList).length == 0) return { items: [], totalBill: 0 }
+  const finalItems = [];
+  for (const item of shoppingList) {
+    if (priceList.hasOwnProperty(item.name)) {
+      const priceOfItem = priceList[item.name];
+      if (priceOfItem > 80) continue;
+      finalItems.push({ name: item.name, qty: item.qty, cost: item.qty * priceOfItem })
+    }
+  }
+  return {
+    items: finalItems,
+    totalBill: finalItems.reduce((acc, current) => acc + current.cost, 0)
+  }
 }

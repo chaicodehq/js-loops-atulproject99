@@ -35,5 +35,51 @@
  *   // => { attempts: 5, success: false, totalWaitTime: 15 }
  */
 export function upiRetry(outcomes) {
+  if (!Array.isArray(outcomes) || outcomes.length == 0) {
+    return { attempts: 0, success: false, totalWaitTime: 0 };
+  }
+  let i = 0;
+  let attempts = 0;
+  let wait = 1;
+  let totalWaitTime = 0;
+  let success = false;
+  do {
+    attempts++;
+
+    if (outcomes[i] === "success") {
+      success = true;
+      break;
+    }
+
+    if (attempts < 5) {
+      totalWaitTime += wait;
+      wait *= 2; // exponential backoff
+    }
+
+    i++;
+
+  } while (attempts < 5 && i < outcomes.length);
+
+  return { attempts, success, totalWaitTime };
   // Your code here
+  //    *
+  //  * Bunty apne dost ko paise bhej raha hai UPI se, lekin network thoda
+  //  * flaky hai. Payment kabhi success hota hai, kabhi fail. Bunty ka app
+  //  * automatically retry karta hai with exponential backoff.
+  //  *
+  //  * Rules (use do...while loop):
+  //  *   - outcomes is an array of strings: "success" or "fail"
+  //  *   - ALWAYS attempt at least once (that's why do...while!)
+  //  *   - outcomes[0] is the result of attempt 1, outcomes[1] is attempt 2, etc.
+  //  *   - If the attempt is "success", stop immediately
+  //  *   - If the attempt is "fail", add wait time and try again
+  //  *   - Wait times follow exponential backoff: 1s, 2s, 4s, 8s
+  //  *     (wait time is added AFTER a failed attempt, before next retry)
+  //  *   - Maximum 5 attempts total (if all fail, stop after 5th)
+  //  *   - totalWaitTime = sum of all wait times between attempts
+  //  *
+  //  * Validation:
+  //  *   - Agar outcomes array nahi hai ya empty hai,
+  //  *     return: { attempts: 0, success: false, totalWaitTime: 0 }
+
 }

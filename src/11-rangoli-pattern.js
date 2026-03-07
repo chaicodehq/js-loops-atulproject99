@@ -23,7 +23,7 @@
  *
  * (Each row is a string in the returned array)
  *
- * Validation:
+ * Validation:₹
  *   - Agar n positive integer nahi hai (0, negative, decimal, non-number),
  *     return empty array []
  *
@@ -36,5 +36,45 @@
  *   rangoli(3) // => ["  *", " * *", "* * *", " * *", "  *"]
  */
 export function rangoli(n) {
-  // Your code here
+  if (typeof n !== "number" || n <= 0 || !Number.isInteger(n)) return [];
+
+  const result = [];
+
+  // Top half
+  for (let i = 1; i <= n; i++) {
+    let row = "";
+
+    // leading spaces
+    for (let s = 1; s <= n - i; s++) {
+      row += " ";
+    }
+
+    // stars
+    for (let j = 1; j <= i; j++) {
+      row += "*";
+      if (j < i) row += " ";
+    }
+
+    result.push(row);
+  }
+
+  // Bottom half
+  for (let i = n - 1; i >= 1; i--) {
+    let row = "";
+
+    // leading spaces
+    for (let s = 1; s <= n - i; s++) {
+      row += " ";
+    }
+
+    // stars
+    for (let j = 1; j <= i; j++) {
+      row += "*";
+      if (j < i) row += " ";
+    }
+
+    result.push(row);
+  }
+
+  return result;
 }

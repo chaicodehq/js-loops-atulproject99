@@ -35,4 +35,27 @@
  */
 export function buildPlaylist(songs, maxDuration) {
   // Your code here
+  //    * Rules (use while loop):
+  //  *   - Songs array mein se ek ek song add karo
+  //  *   - BEFORE adding a song, check: kya current total + is song ki duration
+  //  *     maxDuration se zyada ho jayegi? Agar haan, toh STOP. Mat add karo.
+  //  *   - Agar kisi song ki duration positive number nahi hai (negative, zero,
+  //  *     NaN, string, etc.), skip that song and move to the next one
+  //  *   - Continue until all songs are checked or maxDuration limit reached
+  //  *
+  //  * Validation:
+  //  *   - Agar songs array nahi hai, return: { count: 0, totalDuration: 0 }
+  //  *   - Agar maxDuration positive number nahi hai, return: { count: 0, totalDuration: 0 }
+  if (!Array.isArray(songs) || songs.length == 0 || typeof maxDuration !== 'number' || maxDuration <= 0) return { count: 0, totalDuration: 0 };
+  let i = 0;
+  const finalSongs = [];
+  let finalDuration = 0;
+  while (i < songs.length) {
+    if (typeof songs[i] !== 'number' || songs[i] <= 0 || Number.isNaN(songs[i])) continue;
+    if (finalDuration + songs[i] > maxDuration) break;
+    finalSongs.push(songs[i]);
+    finalDuration = finalDuration + songs[i];
+    i++;
+  }
+  return { count: finalSongs.length, totalDuration: finalDuration };
 }

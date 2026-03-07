@@ -33,4 +33,42 @@
  */
 export function calculateAutoFare(distance, waitingMinutes = 0) {
   // Your code here
+
+
+  //    * Fare calculation (use while loop, process km by km):
+  //  *   - First 1 km (minimum fare): Rs 30
+  //  *   - Km 2 to 5 (i.e., next 4 km): Rs 15 per km
+  //  *   - Beyond 5 km: Rs 10 per km
+  //  *   - Distance ko Math.ceil() karo (e.g., 3.2 km = 4 km charge)
+  //  *
+  //  * Waiting charges:
+  //  *   - Rs 5 per 2 minutes of waiting
+  //  *   - Waiting minutes ko bhi Math.ceil() karo for pairs
+  //  *     (e.g., 3 min = 2 pairs = Rs 10, 5 min = 3 pairs = Rs 15)
+  //  *   - If waitingMinutes is not provided, default is 0
+  //  *
+  //  * Validation:
+  //  *   - Agar distance ek positive number nahi hai, return -1
+  //  *   - Agar waitingMinutes negative hai, return -1
+  if (typeof distance !== 'number' || distance <= 0 || waitingMinutes < 0) return -1;
+  const finalDistance = Math.ceil(distance);
+  const finalMinutes = Math.ceil(waitingMinutes);
+  let totalFare = 0;
+  let i = 1;
+  while (i <= finalDistance) {
+    if (i == 1) {
+      totalFare = totalFare + 30;
+    }
+    else if (i >= 2 && i <= 5) {
+      totalFare = totalFare + 15;
+    }
+    else {
+      totalFare = totalFare + 10;
+    }
+
+    i++;
+
+  }
+  const totalWatingFare = Math.ceil((finalMinutes / 2)) * 5
+  return totalFare + totalWatingFare;
 }
