@@ -51,7 +51,7 @@ export function buildPlaylist(songs, maxDuration) {
   const finalSongs = [];
   let finalDuration = 0;
   while (i < songs.length) {
-    if (typeof songs[i] !== 'number' || songs[i] <= 0 || Number.isNaN(songs[i])) continue;
+    if (typeof songs[i] !== 'number' || songs[i] <= 0 || Number.isNaN(songs[i])) { i++; continue; }
     if (finalDuration + songs[i] > maxDuration) break;
     finalSongs.push(songs[i]);
     finalDuration = finalDuration + songs[i];
